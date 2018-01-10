@@ -57,11 +57,8 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
 
     void init(AttributeSet attrs, int defStyle) {
         inflate(getContext(), R.layout.sv_slide_view, this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            setBackground(ContextCompat.getDrawable(getContext(), R.drawable.sv_view_bg));
-        } else {
-            setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.sv_view_bg));
-        }
+        Drawable slideBg = ContextCompat.getDrawable(getContext(), R.drawable.sv_view_bg);
+        setSlideBackground(slideBg);
         slideTextView = findViewById(R.id.sv_text);
         slider = findViewById(R.id.sv_slider);
         slider.setOnSeekBarChangeListener(this);
@@ -94,15 +91,28 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
             setTextColor(sliderTextColor == null ? slideTextView.getTextColors() : sliderTextColor);
 
             int buttonImageId = a.getResourceId(R.styleable.SlideView_sv_buttonImage, R.drawable.sv_ic_chevron_double_right);
+            int buttonImageIdDisabled = a.getResourceId(R.styleable.SlideView_sv_buttonImageDisabled, buttonImageId);
             setButtonImage(ContextCompat.getDrawable(getContext(), buttonImageId));
-            setButtonImageDisabled(ContextCompat.getDrawable(getContext(), a.getResourceId
-                    (R.styleable.SlideView_sv_buttonImageDisabled, buttonImageId)));
+            setButtonImageDisabled(ContextCompat.getDrawable(getContext(), buttonImageIdDisabled));
 
-            setButtonBackgroundColor(a.getColorStateList(R.styleable.SlideView_sv_buttonBackgroundColor));
-            setSlideBackgroundColor(a.getColorStateList(R.styleable.SlideView_sv_slideBackgroundColor));
+            if (a.hasValue(R.styleable.SlideView_sv_buttonBackground)) {
+                int buttonBgId = a.getResourceId(R.styleable.SlideView_sv_buttonBackground, R.drawable.sv_thumb);
+                Drawable thumb = ContextCompat.getDrawable(getContext(), buttonBgId);
+                slider.setThumb(thumb);
+                slider.setThumbOffset(30);
+            } else {
+
+                setButtonBackgroundColor(a.getColorStateList(R.styleable.SlideView_sv_buttonBackgroundColor));
+                setSlideBackgroundColor(a.getColorStateList(R.styleable.SlideView_sv_slideBackgroundColor));
+            }
 
             if (a.hasValue(R.styleable.SlideView_sv_strokeColor)) {
                 Util.setDrawableStroke(slideBackground, strokeColor);
+            }
+
+            if (a.hasValue(R.styleable.SlideView_sv_slideViewBackground)) {
+                int slideViewBg = a.getResourceId(R.styleable.SlideView_sv_slideViewBackground, R.drawable.sv_view_bg);
+                setSlideBackground(ContextCompat.getDrawable(getContext(), slideViewBg));
             }
             if (reverseSlide) {
                 slider.setRotation(180);
@@ -120,6 +130,14 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
         }
     }
 
+    private void setSlideBackground(Drawable slideBg) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            setBackground(slideBg);
+        } else {
+            setBackgroundDrawable(slideBg);
+        }
+    }
+
     public void setTextColor(@ColorInt int color) {
         slideTextView.setTextColor(color);
     }
@@ -132,9 +150,13 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
         slideTextView.setText(text);
     }
 
-    public void setTextSize(int size) { slideTextView.setTextSize(size); }
+    public void setTextSize(int size) {
+        slideTextView.setTextSize(size);
+    }
 
-    public TextView getTextView() { return slideTextView; }
+    public TextView getTextView() {
+        return slideTextView;
+    }
 
     public void setButtonImage(Drawable image) {
         buttonImage = image;

@@ -3,7 +3,9 @@
 
     <declare-styleable name="SlideView">
         <attr name="sv_slideBackgroundColor" format="color" />
+        <attr name="sv_slideViewBackground" format="reference" />
         <attr name="sv_buttonBackgroundColor" format="color" />
+        <attr name="sv_buttonBackground" format="reference" />
         <attr name="sv_buttonImage" format="reference" />
         <attr name="sv_buttonImageDisabled" format="reference" />
         <attr name="sv_strokeColor" format="color" />
