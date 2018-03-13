@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -110,8 +111,8 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
                 Util.setDrawableStroke(slideBackground, strokeColor);
             }
 
-            if (a.hasValue(R.styleable.SlideView_sv_slideViewBackground)) {
-                int slideViewBg = a.getResourceId(R.styleable.SlideView_sv_slideViewBackground, R.drawable.sv_view_bg);
+            if (a.hasValue(R.styleable.SlideView_sv_slideBackground)) {
+                int slideViewBg = a.getResourceId(R.styleable.SlideView_sv_slideBackground, R.drawable.sv_view_bg);
                 setSlideBackground(ContextCompat.getDrawable(getContext(), slideViewBg));
             }
             if (reverseSlide) {

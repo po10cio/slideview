@@ -22,7 +22,7 @@
         app:sv_buttonImage="@drawable/ic_chevron_double_right_pink"
         app:sv_slideBackgroundColor="@color/colorAccent"
         app:sv_slideText="Accept"
-        app:sv_slideViewBackground="@drawable/custom_bg" />
+        app:sv_slideBackground="@drawable/custom_bg" />
 
     <ng.max.slideview.SlideView
         android:id="@+id/slider2"
